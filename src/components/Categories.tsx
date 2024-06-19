@@ -1,11 +1,20 @@
 import Image from 'next/image';
 
+import { ICategory } from '@/entities/Category';
 import cn from '@/utils/cn';
 
-export default function Categories({ categories }: any) {
+type ChangedCategory = Pick<ICategory, 'name' | 'id'> & {
+  image: string;
+};
+
+interface ICategoriesProps {
+  categories: ChangedCategory[];
+}
+
+export default function Categories({ categories }: ICategoriesProps) {
   return (
     <div className="flex gap-3 mx-auto mt-5 items-center justify-around">
-      {categories.map((category: any, index: number) => (
+      {categories.map((category, index: number) => (
         <button
           key={category.id}
           type="button"

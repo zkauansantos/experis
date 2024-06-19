@@ -34,6 +34,7 @@ export default function Menu() {
                 className={cn(
                   'text-xl uppercase h-full flex items-center justify-center text-white tracking-[0.5px] flex-1',
                   index === 0 && 'border-b-2',
+                  !(index === 0) && 'cursor-not-allowed opacity-50',
                 )}
               >
                 <span>{it}</span>
