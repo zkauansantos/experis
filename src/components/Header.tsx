@@ -13,12 +13,16 @@ export default function Header() {
       <Image
         className="md:hidden w-full object-cover"
         src={headerImageMobile}
+        quality={100}
+        priority
         alt="Imagem de hambuguer logo"
       />
 
       <Image
         className="hidden md:block w-full "
         src={headerImageDesktop}
+        quality={100}
+        priority
         alt="Imagem de hambuguer logo"
       />
     </div>
