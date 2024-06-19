@@ -1,19 +1,19 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import React from 'react';
 
-type Props = {
+interface IAccordionItemProps {
   title: string;
   children: React.ReactNode;
   open: boolean;
   onClick: () => void;
-};
+}
 
 export function AccordionItem({
   title,
   children,
   onClick,
   open = false,
-}: Props) {
+}: IAccordionItemProps) {
   return (
     <article className="w-full select-none">
       <button
