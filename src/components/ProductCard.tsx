@@ -29,41 +29,39 @@ export default function ProductCard({ product }: IProductProps) {
   }
 
   return (
-    <>
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={handleOpenModal}
-        onKeyDown={handleKeyDown}
-        className="flex overflow-hidden items-center justify-between gap-4"
-      >
-        <div className="flex flex-col gap-1">
-          <h4 className="font-medium">{product.name}</h4>
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={handleOpenModal}
+      onKeyDown={handleKeyDown}
+      className="flex overflow-hidden items-center justify-between gap-4"
+    >
+      <div className="flex flex-col gap-1">
+        <h4 className="font-medium">{product.name}</h4>
 
-          {product.description && (
-            <h4 className="font-light text-gray-500">
-              {truncate(product.description, 60)}
-            </h4>
-          )}
-          <p className="font-medium">{formatCurrency(product.price)}</p>
-        </div>
-
-        {product.images && product.images.length > 0 && (
-          <Image
-            src={product.images[0].image}
-            alt={product.name}
-            width={200}
-            height={200}
-            quality={100}
-            priority
-            className="max-w-[128px] max-h-[85px] object-contain rounded-md"
-          />
+        {product.description && (
+          <h4 className="font-light text-gray-500">
+            {truncate(product.description, 60)}
+          </h4>
         )}
+        <p className="font-medium">{formatCurrency(product.price)}</p>
       </div>
+
+      {product.images && product.images.length > 0 && (
+        <Image
+          src={product.images[0].image}
+          alt={product.name}
+          width={200}
+          height={200}
+          quality={100}
+          priority
+          className="max-w-[128px] max-h-[85px] object-contain rounded-md"
+        />
+      )}
 
       {modalProductDetailsOpen && (
         <ProductDetailModal product={product} onClose={handleCloseModal} />
       )}
-    </>
+    </div>
   );
 }

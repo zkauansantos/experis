@@ -8,8 +8,10 @@ import toast from 'react-hot-toast';
 import { IModifier } from '@/entities/Modifier';
 import { IProduct } from '@/entities/Product';
 import { useGlobalStore } from '@/state/store/globalStore';
+import calculateProdductPriceWithModifiers from '@/utils/calculateProductPriceWithModifiers';
 import cn from '@/utils/cn';
 import formatCurrency from '@/utils/formatCurrency';
+import handlerUpdateProductModifier from '@/utils/handlerUpdateProductModifier';
 
 import Button from './Button';
 import CounterInput from './CounterInput';
@@ -59,40 +61,24 @@ export default function ProductDetailModal({
     modifierId: number;
     itemId: number;
   }) {
-    const itemModifierSelected = product.modifiers
-      ?.flatMap((modifier) => modifier.items)
-      .find((item) => item.id === itemId);
-
-    if (!itemModifierSelected) return;
-
-    // um modifier tem um array de items, e é isso que vamos mandar para o carirnho
-
     const modifier = product.modifiers?.find((mod) => mod.id === modifierId);
-
     if (!modifier) return;
 
-    const modifierChanged = {
-      ...modifier,
-      items: [itemModifierSelected],
-    };
+    const itemModifierSelected = modifier.items.find(
+      (item) => item.id === itemId,
+    );
+    if (!itemModifierSelected) return;
 
-    setSelectedModifiers((prevState) => {
-      const modifierIndex = prevState.findIndex(
-        (mod) => mod.id === modifierChanged.id,
-      );
-
-      if (modifierIndex < 0) {
-        return [...prevState, modifierChanged];
-      }
-
-      return prevState.map((modi) => ({
-        ...modi,
-        items:
-          modi.id === modifierChanged.id ? [itemModifierSelected] : modi.items,
-      }));
-    });
+    setSelectedModifiers((prevState) =>
+      handlerUpdateProductModifier({
+        itemId,
+        itemModifierSelected,
+        modifier,
+        modifierId,
+        prevState,
+      }),
+    );
   }
-
   const isRequiredOneOrMoreModifier = product.modifiers?.some(
     (modifier) => modifier.minChoices > 0,
   );
@@ -147,7 +133,11 @@ export default function ProductDetailModal({
                       {modifier.name}
                     </strong>
 
-                    <span className="block text-gray-500">Select 1 Option</span>
+                    <span className="block text-gray-500">
+                      Select
+                      {modifier.maxChoices === 1 && ' 1 Option'}
+                      {modifier.maxChoices > 1 && ` 1 or more options`}
+                    </span>
                   </div>
 
                   <div className="p-4 flex flex-col gap-4">
@@ -156,7 +146,7 @@ export default function ProductDetailModal({
                         key={item.id}
                         className="flex items-center justify-between"
                       >
-                        <div className="flex flex-col">
+                        <div className="flex flex-col items-start">
                           <strong className="font-medium">{item.name}</strong>
 
                           <strong className="text-gray-500 font-medium">
@@ -164,16 +154,32 @@ export default function ProductDetailModal({
                           </strong>
                         </div>
 
-                        <input
-                          onChange={() =>
-                            handleSelectModifier({
-                              modifierId: modifier.id,
-                              itemId: item.id,
-                            })
-                          }
-                          type="radio"
-                          name="modifier"
-                        />
+                        {modifier.maxChoices === 1 && (
+                          <input
+                            onChange={() =>
+                              handleSelectModifier({
+                                modifierId: modifier.id,
+                                itemId: item.id,
+                              })
+                            }
+                            type="radio"
+                            name="modifier"
+                          />
+                        )}
+
+                        {modifier.maxChoices > 1 && (
+                          <input
+                            onChange={() =>
+                              handleSelectModifier({
+                                modifierId: modifier.id,
+                                itemId: item.id,
+                              })
+                            }
+                            tabIndex={-1}
+                            type="checkbox"
+                            name="modifier"
+                          />
+                        )}
                       </div>
                     ))}
                   </div>
@@ -193,7 +199,14 @@ export default function ProductDetailModal({
               onClick={() => handleAddToCart(product)}
               className="w-full h-[48px]  text-white p-4 text-lg rounded-[40px]"
             >
-              Add to Order • {formatCurrency(product.price * quantity)}
+              Add to Order •{' '}
+              {formatCurrency(
+                product.price ||
+                  calculateProdductPriceWithModifiers({
+                    ...product,
+                    modifiers: selectedModifiers,
+                  }) * quantity,
+              )}
             </Button>
           </div>
         </div>

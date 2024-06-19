@@ -12,12 +12,12 @@ export default function Cart() {
   const getTotal = useGlobalStore((state) => state.getTotal);
 
   return (
-    <div className="flex-[0.4] bg-white shadow-md hidden md:block">
+    <aside className="flex-[0.4] bg-white shadow-md hidden md:block">
       <header className="bg-gray-50 px-6 py-[22px]">
         <strong>Carrinho</strong>
       </header>
 
-      <div className="p-6">
+      <div className="p-6 shadow-inner">
         {cartItems.length === 0 && <p>Seu carrinho está vazio</p>}
 
         {cartItems.map((product) => (
@@ -49,17 +49,22 @@ export default function Cart() {
             </div>
 
             <span className="font-semibold text-brown">
-              R$ {product.price * Number(product.quantity)}
+              {formatCurrency(product.price * Number(product.quantity))}
             </span>
           </div>
         ))}
-
-        {cartItems.length > 0 && (
-          <p>
-            <strong>Total:</strong> {formatCurrency(getTotal(cartItems))}
-          </p>
-        )}
       </div>
-    </div>
+      {cartItems.length > 0 && (
+        <footer className="bg-gray-50 p-4">
+          <div className="flex items-center justify-between">
+            <span className="text-2xl font-light">Total:</span>
+
+            <strong className="text-2xl font-bold">
+              {formatCurrency(getTotal(cartItems))}
+            </strong>
+          </div>
+        </footer>
+      )}
+    </aside>
   );
 }
