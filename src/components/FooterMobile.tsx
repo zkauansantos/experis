@@ -1,5 +1,6 @@
 'use client';
 
+import useIsMounted from '@/hooks/useIsMounted';
 import useModal from '@/hooks/useModal';
 import { useGlobalStore } from '@/state/store/globalStore';
 
@@ -7,11 +8,12 @@ import Button from './Button';
 import ModalCartMobile from './ModalCartMobile';
 
 export default function FooterMobile() {
+  const isMouted = useIsMounted();
   const { closeModal, isOpen, openModal } = useModal();
   const qtyCartItems = useGlobalStore((state) => state.cartItems).length;
-
   const isPlural = qtyCartItems > 1;
 
+  if (!isMouted) return null;
   if (qtyCartItems === 0) return null;
 
   return (

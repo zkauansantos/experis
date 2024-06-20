@@ -1,4 +1,8 @@
+'use client';
+
 import { X } from 'lucide-react';
+
+import useIsMounted from '@/hooks/useIsMounted';
 
 import Button from './Button';
 import Cart from './Cart';
@@ -8,6 +12,10 @@ interface IModalCartMobileProps {
 }
 
 export default function ModalCartMobile({ onClose }: IModalCartMobileProps) {
+  const isMounted = useIsMounted();
+
+  if (!isMounted) return null;
+
   return (
     <div className="fixed top-0 left-0 flex flex-col justify-between bg-white h-screen w-screen z-[99]">
       <div>
