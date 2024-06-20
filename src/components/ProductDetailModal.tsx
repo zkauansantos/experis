@@ -82,7 +82,6 @@ export default function ProductDetailModal({
   const isRequiredOneOrMoreModifier = product.modifiers?.some(
     (modifier) => modifier.minChoices > 0,
   );
-
   const isDisabledButton =
     quantity === 0 ||
     (isRequiredOneOrMoreModifier && selectedModifiers.length === 0);

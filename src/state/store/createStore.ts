@@ -37,7 +37,11 @@ export function createStore<TState extends Record<string, any>>(
   function useStore<TValue>(
     selector: (currentState: TState) => TValue,
   ): TValue {
-    return useSyncExternalStore(subscribe, () => selector(state));
+    return useSyncExternalStore(
+      subscribe,
+      () => selector(state),
+      () => selector(state),
+    );
   }
 
   state = createState(setState, getState);
