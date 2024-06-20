@@ -12,8 +12,8 @@ export default function Cart() {
   const getTotal = useGlobalStore((state) => state.getTotal);
 
   return (
-    <aside className="flex-[0.4] bg-white shadow-md hidden md:block">
-      <header className="bg-gray-50 px-6 py-[22px]">
+    <aside className="flex-1 bg-white md:shadow-md">
+      <header className="bg-gray-50 px-6 py-[22px] hidden md:block">
         <strong>Carrinho</strong>
       </header>
 

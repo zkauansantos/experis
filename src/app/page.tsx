@@ -1,3 +1,4 @@
+import FooterMobile from '@/components/FooterMobile';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import { foodMenuService } from '@/services/food-menu';
@@ -10,6 +11,8 @@ export default async function Home() {
       <Header />
 
       <Hero data={data} />
+
+      <FooterMobile />
     </div>
   );
 }

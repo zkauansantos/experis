@@ -1,7 +1,8 @@
 import Image from 'next/image';
-import { KeyboardEvent, useState } from 'react';
+import { KeyboardEvent } from 'react';
 
 import { IProduct } from '@/entities/Product';
+import useModal from '@/hooks/useModal';
 import formatCurrency from '@/utils/formatCurrency';
 import truncate from '@/utils/truncate';
 
@@ -12,19 +13,11 @@ interface IProductProps {
 }
 
 export default function ProductCard({ product }: IProductProps) {
-  const [modalProductDetailsOpen, setModalProductDetailsOpen] = useState(false);
-
-  function handleOpenModal() {
-    setModalProductDetailsOpen(true);
-  }
-
-  function handleCloseModal() {
-    setModalProductDetailsOpen(false);
-  }
+  const { closeModal, isOpen, openModal } = useModal();
 
   function handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter' || event.key === ' ') {
-      handleOpenModal();
+      openModal();
     }
   }
 
@@ -33,7 +26,7 @@ export default function ProductCard({ product }: IProductProps) {
       <div
         role="button"
         tabIndex={0}
-        onClick={handleOpenModal}
+        onClick={openModal}
         onKeyDown={handleKeyDown}
         className="flex overflow-hidden items-center justify-between gap-4"
       >
@@ -60,9 +53,7 @@ export default function ProductCard({ product }: IProductProps) {
           />
         )}
       </div>
-      {modalProductDetailsOpen && (
-        <ProductDetailModal product={product} onClose={handleCloseModal} />
-      )}
+      {isOpen && <ProductDetailModal product={product} onClose={closeModal} />}
     </>
   );
 }

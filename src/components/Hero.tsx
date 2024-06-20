@@ -21,8 +21,8 @@ export default function Hero({ data }: IHeroProps) {
     <main className="p-4">
       <Input name="search" value={search} onChange={handleSearch} />
 
-      <section className="md:bg-gray-100 mt-[6px] mx-auto max-w-5xl flex items-start md:py-8 md:px-10 gap-6">
-        <div className="md:flex-[0.6] flex-1 md:bg-white md:px-4 md:py-5 md:shadow-md md:justify-between">
+      <section className="md:bg-gray-100 mt-[6px] mx-auto max-w-5xl flex items-start pb-[124px] md:py-8 md:px-10 gap-6">
+        <div className="md:flex-[0.6] flex-1 md:bg-white md:px-4 md:py-5 md:shadow-md md:justify-between ">
           <Categories
             categorySelected={category}
             onChangeCategory={handleFilterCategory}
@@ -32,7 +32,9 @@ export default function Hero({ data }: IHeroProps) {
           <Accordion sections={filteredData} />
         </div>
 
-        <Cart />
+        <div className="hidden md:block flex-[0.4]">
+          <Cart />
+        </div>
       </section>
     </main>
   );
