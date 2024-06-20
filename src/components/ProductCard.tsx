@@ -1,12 +1,17 @@
 import Image from 'next/image';
 import { KeyboardEvent, useState } from 'react';
 
+import { IProduct } from '@/entities/Product';
 import formatCurrency from '@/utils/formatCurrency';
 import truncate from '@/utils/truncate';
 
 import ProductDetailModal from './ProductDetailModal';
 
-export default function ProductCard({ product }: any) {
+interface IProductProps {
+  product: IProduct;
+}
+
+export default function ProductCard({ product }: IProductProps) {
   const [modalProductDetailsOpen, setModalProductDetailsOpen] = useState(false);
 
   function handleOpenModal() {
@@ -34,13 +39,16 @@ export default function ProductCard({ product }: any) {
       >
         <div className="flex flex-col gap-1">
           <h4 className="font-medium">{product.name}</h4>
-          <h4 className="font-light text-gray-500">
-            {truncate(product.description, 60)}
-          </h4>
+
+          {product.description && (
+            <h4 className="font-light text-gray-500">
+              {truncate(product.description, 60)}
+            </h4>
+          )}
           <p className="font-medium">{formatCurrency(product.price)}</p>
         </div>
 
-        {product.images?.length > 0 && (
+        {product.images && product.images.length > 0 && (
           <Image
             src={product.images[0].image}
             alt={product.name}
@@ -52,7 +60,6 @@ export default function ProductCard({ product }: any) {
           />
         )}
       </div>
-
       {modalProductDetailsOpen && (
         <ProductDetailModal product={product} onClose={handleCloseModal} />
       )}

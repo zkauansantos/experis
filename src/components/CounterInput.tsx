@@ -1,38 +1,52 @@
+'use client';
+
 import { Minus, Plus } from 'lucide-react';
-import { useState } from 'react';
 
-export default function CounterInput() {
-  const [quantity, setQuantity] = useState(0);
+import cn from '@/utils/cn';
 
-  function handleIncrement() {
-    setQuantity((prev) => prev + 1);
-  }
+import Button from './Button';
 
-  function handleDecrement() {
-    setQuantity((prev) => {
-      if (prev === 0) return prev;
+interface ICounterInputProps {
+  value: number;
+  onDecrement: () => void;
+  onIncrement: () => void;
+  variant?: 'lg' | 'sm';
+}
 
-      return prev - 1;
-    });
-  }
-
+export default function CounterInput({
+  onDecrement,
+  onIncrement,
+  value,
+  variant = 'lg',
+}: ICounterInputProps) {
   return (
     <div className="flex gap-4 items-center justify-center">
-      <button
-        type="button"
-        className="px-2 py-1 rounded-full flex items-center justify-center h-[32px] w-[32px] bg-gray-200 text-gray-600"
-        onClick={handleDecrement}
+      <Button
+        className={cn(
+          'rounded-full bg-gray-200 text-gray-600 h-[32px] w-[32px]',
+          variant === 'sm' && 'h-5 w-5',
+        )}
+        onClick={onDecrement}
       >
         <Minus />
-      </button>
-      <span className="text-2xl font-semibold">{quantity}</span>
-      <button
-        type="button"
-        className="px-2 py-1 rounded-full flex items-center justify-center h-[32px] w-[32px] bg-brown"
-        onClick={handleIncrement}
+      </Button>
+      <span
+        className={cn(
+          'text-2xl font-semibold',
+          variant === 'sm' && 'text-base',
+        )}
+      >
+        {value}
+      </span>
+      <Button
+        className={cn(
+          'rounded-full h-[32px] w-[32px] bg-brown',
+          variant === 'sm' && 'h-5 w-5',
+        )}
+        onClick={onIncrement}
       >
         <Plus className="text-white" />
-      </button>
+      </Button>
     </div>
   );
 }
