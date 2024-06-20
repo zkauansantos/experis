@@ -1,15 +1,19 @@
 'use client';
 
+import useIsMounted from '@/hooks/useIsMounted';
 import { useGlobalStore } from '@/state/store/globalStore';
 import formatCurrency from '@/utils/formatCurrency';
 
 import CounterInput from './CounterInput';
 
 export default function Cart() {
+  const isMounted = useIsMounted();
   const cartItems = useGlobalStore((state) => state.cartItems);
   const addToCart = useGlobalStore((state) => state.addToCart);
   const removeFromCart = useGlobalStore((state) => state.removeFromCart);
   const getTotal = useGlobalStore((state) => state.getTotal);
+
+  if (!isMounted) return null;
 
   return (
     <aside className="flex-1 bg-white md:shadow-md">

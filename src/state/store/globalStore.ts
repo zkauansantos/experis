@@ -1,6 +1,9 @@
+'use client';
+
 import { IProduct } from '@/entities/Product';
 import calculateProdductPriceWithModifiers from '@/utils/calculateProductPriceWithModifiers';
 import { calculateTotalPrice } from '@/utils/calculateTotalPrice';
+import { safeCookiesStorageGetItem } from '@/utils/safeCookiesStorageGetItem';
 
 import { createStore } from './createStore';
 
@@ -12,7 +15,8 @@ interface IGlobalStore {
 }
 
 export const useGlobalStore = createStore<IGlobalStore>((setState) => ({
-  cartItems: [],
+  cartItems:
+    safeCookiesStorageGetItem<IGlobalStore>('global-state')?.cartItems || [],
   addToCart: (product, quantity) => {
     setState((prevState) => {
       const itemIndex = prevState.cartItems.findIndex(
