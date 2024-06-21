@@ -4,11 +4,10 @@ import { useState } from 'react';
 
 import { IFoodMenu } from '@/entities/FoodMenu';
 
-import ProductCard from '../ProductCard';
+import Accordion from './Accordion';
+import ProductCard from './ProductCard';
 
-import { AccordionItem } from './AccordionItem';
-
-export function Accordion({ sections }: Pick<IFoodMenu, 'sections'>) {
+export default function FoodMenu({ sections }: Pick<IFoodMenu, 'sections'>) {
   const [indexesOpens, setIndexesOpens] = useState([0, 1, 2]);
 
   const handleClick = (index: number) => {
@@ -26,7 +25,7 @@ export function Accordion({ sections }: Pick<IFoodMenu, 'sections'>) {
         const hasItems = item.items.length > 0;
 
         return (
-          <AccordionItem
+          <Accordion
             key={item.id}
             open={indexesOpens.includes(index)}
             title={item.name}
@@ -37,7 +36,7 @@ export function Accordion({ sections }: Pick<IFoodMenu, 'sections'>) {
             {item.items.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
-          </AccordionItem>
+          </Accordion>
         );
       })}
     </div>

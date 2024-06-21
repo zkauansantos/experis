@@ -4,9 +4,9 @@ import { IFoodMenu } from '@/entities/FoodMenu';
 import useFilterFoodMenu from '@/hooks/useFilterFoodMenu';
 import filterCategories from '@/utils/filterCategories';
 
-import { Accordion } from './Accordion';
 import Cart from './Cart';
 import Categories from './Categories';
+import FoodMenu from './FoodMenu';
 import Input from './Input';
 
 interface IHeroProps {
@@ -29,7 +29,7 @@ export default function Hero({ data }: IHeroProps) {
             categories={filterCategories(data)}
           />
 
-          <Accordion sections={filteredData} />
+          <FoodMenu sections={filteredData} />
         </div>
 
         <div className="hidden md:block flex-[0.4]">
