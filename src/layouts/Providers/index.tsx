@@ -8,7 +8,7 @@ interface IProvidersProps extends PropsWithChildren {}
 export default function Providers({ children }: IProvidersProps) {
   return (
     <>
-      <Toaster position="bottom-center" />
+      <Toaster />
 
       {children}
     </>

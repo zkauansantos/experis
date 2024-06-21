@@ -1,24 +1,39 @@
 'use client';
 
+import toast from 'react-hot-toast';
+
+import useIsMounted from '@/hooks/useIsMounted';
 import { useGlobalStore } from '@/state/store/globalStore';
 import formatCurrency from '@/utils/formatCurrency';
 
+import Checkout from './Checkout';
 import CounterInput from './CounterInput';
 
 export default function Cart() {
+  const isMounted = useIsMounted();
   const cartItems = useGlobalStore((state) => state.cartItems);
   const addToCart = useGlobalStore((state) => state.addToCart);
   const removeFromCart = useGlobalStore((state) => state.removeFromCart);
   const getTotal = useGlobalStore((state) => state.getTotal);
+  const clearCart = useGlobalStore((state) => state.clearCart);
+
+  const hasCartItems = cartItems.length > 0;
+
+  function handleCheckout() {
+    toast.success('Compra realizada com sucesso!');
+    clearCart();
+  }
+
+  if (!isMounted) return null;
 
   return (
-    <aside className="flex-[0.4] bg-white shadow-md hidden md:block">
-      <header className="bg-gray-50 px-6 py-[22px]">
+    <aside className="flex-1 bg-white md:shadow-md">
+      <header className="bg-gray-50 px-6 py-[22px] hidden md:block">
         <strong>Carrinho</strong>
       </header>
 
       <div className="p-6 shadow-inner">
-        {cartItems.length === 0 && <p>Seu carrinho está vazio</p>}
+        {!hasCartItems && <p>Seu carrinho está vazio</p>}
 
         {cartItems.map((product) => (
           <div
@@ -54,16 +69,21 @@ export default function Cart() {
           </div>
         ))}
       </div>
-      {cartItems.length > 0 && (
-        <footer className="bg-gray-50 p-4">
-          <div className="flex items-center justify-between">
-            <span className="text-2xl font-light">Total:</span>
 
-            <strong className="text-2xl font-bold">
-              {formatCurrency(getTotal(cartItems))}
-            </strong>
-          </div>
-        </footer>
+      {hasCartItems && (
+        <>
+          <footer className="bg-gray-50 p-4">
+            <div className="flex items-center justify-between">
+              <span className="text-2xl font-light">Total:</span>
+
+              <strong className="text-2xl font-bold">
+                {formatCurrency(getTotal(cartItems))}
+              </strong>
+            </div>
+          </footer>
+
+          <Checkout onCheckout={handleCheckout} />
+        </>
       )}
     </aside>
   );

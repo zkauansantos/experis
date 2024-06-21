@@ -1,3 +1,4 @@
+import { setCookie } from 'nookies';
 import { useSyncExternalStore } from 'react';
 
 type SetterFn<T> = (prevState: T) => Partial<T>;
@@ -18,6 +19,11 @@ export function createStore<TState extends Record<string, any>>(
       typeof partialState === 'function' ? partialState(state) : partialState;
 
     state = { ...state, ...newValue };
+
+    setCookie(null, 'global-state', JSON.stringify(state), {
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+    });
 
     notifyListeners();
   }
