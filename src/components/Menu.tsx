@@ -18,7 +18,7 @@ export default function Menu() {
           Menu
         </strong>
 
-        <button type="button" className="absolute right-4">
+        <button type="button" className="absolute right-4 cursor-not-allowed">
           <Hamburger color="white" />
         </button>
       </header>

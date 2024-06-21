@@ -12,6 +12,7 @@ interface IGlobalStore {
   addToCart(product: IProduct, quantity?: number): void;
   removeFromCart(product: IProduct): void;
   getTotal: (cartItems: IProduct[]) => number;
+  clearCart: () => void;
 }
 
 export const useGlobalStore = createStore<IGlobalStore>((setState) => ({
@@ -91,5 +92,10 @@ export const useGlobalStore = createStore<IGlobalStore>((setState) => ({
     const total = calculateTotalPrice(cartItems);
 
     return total;
+  },
+  clearCart: () => {
+    setState({
+      cartItems: [],
+    });
   },
 }));

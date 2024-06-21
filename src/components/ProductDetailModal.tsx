@@ -87,7 +87,7 @@ export default function ProductDetailModal({
     (isRequiredOneOrMoreModifier && selectedModifiers.length === 0);
 
   return (
-    <div className="bg-white md:bg-black/60 fixed z-10 top-0 left-0 w-screen h-screen flex justify-center items-center">
+    <div className="bg-white md:bg-black/60 fixed z-10 top-0 left-0 w-screen h-screen flex justify-center items-center animate-fadeIn">
       <div className="w-full h-full md:max-w-[480px] md:max-h-[720px] md:min-h-[720px] flex  justify-center flex-col relative">
         <div>
           <button

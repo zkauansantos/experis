@@ -1,9 +1,12 @@
 'use client';
 
+import toast from 'react-hot-toast';
+
 import useIsMounted from '@/hooks/useIsMounted';
 import { useGlobalStore } from '@/state/store/globalStore';
 import formatCurrency from '@/utils/formatCurrency';
 
+import Checkout from './Checkout';
 import CounterInput from './CounterInput';
 
 export default function Cart() {
@@ -12,6 +15,14 @@ export default function Cart() {
   const addToCart = useGlobalStore((state) => state.addToCart);
   const removeFromCart = useGlobalStore((state) => state.removeFromCart);
   const getTotal = useGlobalStore((state) => state.getTotal);
+  const clearCart = useGlobalStore((state) => state.clearCart);
+
+  const hasCartItems = cartItems.length > 0;
+
+  function handleCheckout() {
+    toast.success('Compra realizada com sucesso!');
+    clearCart();
+  }
 
   if (!isMounted) return null;
 
@@ -22,7 +33,7 @@ export default function Cart() {
       </header>
 
       <div className="p-6 shadow-inner">
-        {cartItems.length === 0 && <p>Seu carrinho está vazio</p>}
+        {!hasCartItems && <p>Seu carrinho está vazio</p>}
 
         {cartItems.map((product) => (
           <div
@@ -58,16 +69,21 @@ export default function Cart() {
           </div>
         ))}
       </div>
-      {cartItems.length > 0 && (
-        <footer className="bg-gray-50 p-4">
-          <div className="flex items-center justify-between">
-            <span className="text-2xl font-light">Total:</span>
 
-            <strong className="text-2xl font-bold">
-              {formatCurrency(getTotal(cartItems))}
-            </strong>
-          </div>
-        </footer>
+      {hasCartItems && (
+        <>
+          <footer className="bg-gray-50 p-4">
+            <div className="flex items-center justify-between">
+              <span className="text-2xl font-light">Total:</span>
+
+              <strong className="text-2xl font-bold">
+                {formatCurrency(getTotal(cartItems))}
+              </strong>
+            </div>
+          </footer>
+
+          <Checkout onCheckout={handleCheckout} />
+        </>
       )}
     </aside>
   );
