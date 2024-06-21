@@ -1,5 +1,6 @@
 import { ChangeEvent, useMemo, useState } from 'react';
 
+import { ICategory } from '@/entities/Category';
 import { IFoodMenu } from '@/entities/FoodMenu';
 
 export default function useFilterFoodMenu(data: IFoodMenu) {
@@ -20,25 +21,23 @@ export default function useFilterFoodMenu(data: IFoodMenu) {
     });
   }
 
-  const filteredData = useMemo(
-    () =>
-      data.sections
-        .map((section) => {
-          if (category && section.name !== category) {
-            return null;
-          }
+  const filteredData: ICategory[] = useMemo(() => {
+    function filterItems(items: ICategory['items']) {
+      return items.filter((item) =>
+        item.name.toLowerCase().includes(search.toLowerCase()),
+      );
+    }
 
-          const filteredItems = section.items.filter((item) =>
-            item.name.toLowerCase().includes(search.toLowerCase()),
-          );
+    return data.sections
+      .filter((section) => {
+        if (category && section.name !== category) {
+          return false;
+        }
 
-          return filteredItems.length > 0
-            ? { ...section, items: filteredItems }
-            : null;
-        })
-        .filter((section) => section !== null),
-    [data, search, category],
-  );
+        return filterItems(section.items);
+      })
+      .map((section) => ({ ...section, items: filterItems(section.items) }));
+  }, [data, search, category]);
 
   return {
     handleFilterCategory,
