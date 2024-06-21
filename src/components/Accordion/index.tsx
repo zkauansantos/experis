@@ -22,18 +22,24 @@ export function Accordion({ sections }: Pick<IFoodMenu, 'sections'>) {
 
   return (
     <div className="w-full flex flex-col gap-8 mt-10">
-      {sections.map((item, index: number) => (
-        <AccordionItem
-          key={item.id}
-          open={indexesOpens.includes(index)}
-          title={item.name}
-          onClick={() => handleClick(index)}
-        >
-          {item.items.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </AccordionItem>
-      ))}
+      {sections.map((item, index: number) => {
+        const hasItems = item.items.length > 0;
+
+        return (
+          <AccordionItem
+            key={item.id}
+            open={indexesOpens.includes(index)}
+            title={item.name}
+            onClick={() => handleClick(index)}
+          >
+            {!hasItems && <p className="text-gray-500">No items available</p>}
+
+            {item.items.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </AccordionItem>
+        );
+      })}
     </div>
   );
 }
